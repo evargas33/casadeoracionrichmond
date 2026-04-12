@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -r \"echo 'upload_max: '.ini_get\\('upload_max_filesize'\\).', post_max: '.ini_get\\('post_max_size'\\).', memory: '.ini_get\\('memory_limit'\\);\")",
+      "Bash(chmod -R 775 storage/app/livewire-tmp storage/app/public/media)",
+      "Read(//etc/php/8.4/**)",
+      "Bash(sudo sed:*)",
+      "Bash(php -r 'require '\\\\''/home/milo/Desktop/laravel-projects/iglesia-cdor/vendor/autoload.php'\\\\''; $app = require '\\\\''/home/milo/Desktop/laravel-projects/iglesia-cdor/bootstrap/app.php'\\\\''; $app->make\\('\\\\''Illuminate\\\\Contracts\\\\Console\\\\Kernel'\\\\''\\)->bootstrap\\(\\); $settings = App\\\\Models\\\\Setting::pluck\\('\\\\''value'\\\\'', '\\\\''key'\\\\''\\); print_r\\($settings->toArray\\(\\)\\);')"
+    ]
+  }
+}
