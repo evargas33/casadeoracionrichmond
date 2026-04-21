@@ -124,7 +124,14 @@ $featuredSeries = \App\Models\Serie::where('active', true)
         </a>
       @endforeach
       @auth
-        <a href="{{ route('admin.dashboard') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Panel</a>
+        @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+          <a href="{{ route('servidores') }}" class="nav-link text-white/80 hover:text-white text-sm font-light tracking-wide transition-colors">Servidores</a>
+        @endif
+        @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+          <a href="{{ route('admin.dashboard') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Panel</a>
+        @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+          <a href="{{ route('admin.services') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Mis Servicios</a>
+        @endif
       @else
         <a href="{{ route('login') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Iniciar sesión</a>
       @endauth
@@ -153,7 +160,14 @@ $featuredSeries = \App\Models\Serie::where('active', true)
       </a>
     @endforeach
     @auth
-      <a href="{{ route('admin.dashboard') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Panel de administración</a>
+      @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+        <a href="{{ route('servidores') }}" onclick="closeMenu()" class="text-white/80 text-sm tracking-wide">Servidores</a>
+      @endif
+      @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+        <a href="{{ route('admin.dashboard') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Panel de administración</a>
+      @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+        <a href="{{ route('admin.services') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Mis Servicios</a>
+      @endif
     @else
       <a href="{{ route('login') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Iniciar sesión</a>
     @endauth
@@ -223,7 +237,7 @@ $featuredSeries = \App\Models\Serie::where('active', true)
     <div class="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
 
       <div class="relative fade-in">
-        <img src="https://picsum.photos/seed/community/800/1000" alt="Congregación" class="w-full aspect-[4/5] object-cover">
+        <img src="https://images.squarespace-cdn.com/content/v1/5963c336bf629a58762b0977/1727128124713-L8XK4PNE9VC5Q2SKUHP8/DSC_4076.jpg" alt="Congregación" class="w-full aspect-[4/5] object-cover">
         <div class="absolute -bottom-6 -right-6 w-40 h-40 bg-navy hidden md:flex items-center justify-center text-center p-4">
           <div>
             <p class="font-serif text-gold text-3xl font-light">{{ date('Y') - (int)$churchFounded }}+</p>
@@ -238,15 +252,15 @@ $featuredSeries = \App\Models\Serie::where('active', true)
           Más que una iglesia,<br><em class="italic text-gold">una familia</em>
         </h2>
         <p class="text-navy/70 font-light text-base leading-relaxed mb-6">
-          Desde 2009, Casa de Oración ha sido un refugio espiritual para la comunidad hispana en el área de la Bahía. Creemos en un evangelio que transforma vidas, familias y comunidades enteras.
+          Desde 2015, Casa de Oración Richmond ha sido un refugio espiritual para la comunidad hispana en el área de la Bahía. Creemos en un evangelio sano que transforma vidas, familias y comunidades enteras.
         </p>
         <blockquote class="pl-5 py-1 mb-8 font-serif italic text-navy/60 text-lg">
-          "Porque donde dos o tres se reúnen en mi nombre, allí estoy yo en medio de ellos."<br>
-          <cite class="text-gold not-italic text-sm font-sans font-light">— Mateo 18:20</cite>
+          "yo los llevaré a mi santo monte, y los recrearé en mi casa de oración; sus holocaustos y sus sacrificios serán aceptos sobre mi altar; porque mi casa será llamada casa de oración para todos los pueblos."<br>
+          <cite class="text-gold not-italic text-sm font-sans font-light">— Isaías 56:7 </cite>
         </blockquote>
 
         <div class="grid grid-cols-2 gap-6 mb-10">
-          @foreach(['Fe'=>'Fundamentados en la Palabra','Comunidad'=>'Familia que cuida y crece','Servicio'=>'Siervos del reino de Dios','Misión'=>'Alcanzando las naciones'] as $titulo=>$desc)
+          @foreach(['Fe'=>'Fundamentada en la Palabra','Comunidad'=>'Familia que cuida y crece','Servicio'=>'Siervos del reino de Dios','Misión'=>'Alcanzando las naciones'] as $titulo=>$desc)
           <div class="border-l-2 border-gold pl-4">
             <p class="font-serif text-2xl text-navy font-light mb-1">{{ $titulo }}</p>
             <p class="text-navy/60 text-sm font-light">{{ $desc }}</p>

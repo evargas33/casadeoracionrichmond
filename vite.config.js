@@ -8,6 +8,13 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
-
+        viteStaticCopy({
+            targets: [
+                {
+                    src: 'node_modules/tinymce/*',
+                    dest: 'tinymce'
+                }
+            ]
+        }),
     ],
 });

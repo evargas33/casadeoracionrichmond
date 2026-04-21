@@ -83,7 +83,14 @@ $menuPages       = \App\Models\Page::inMenu()->get();
         </a>
       @endforeach
       @auth
-        <a href="{{ route('admin.dashboard') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Panel</a>
+        @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+          <a href="{{ route('servidores') }}" class="nav-link text-white/80 hover:text-white text-sm font-light tracking-wide transition-colors {{ request()->routeIs('servidores') ? 'text-white' : '' }}">Servidores</a>
+        @endif
+        @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+          <a href="{{ route('admin.dashboard') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Panel</a>
+        @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+          <a href="{{ route('admin.services') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Mis Servicios</a>
+        @endif
       @else
         <a href="{{ route('login') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Iniciar sesión</a>
       @endauth
@@ -112,7 +119,14 @@ $menuPages       = \App\Models\Page::inMenu()->get();
       </a>
     @endforeach
     @auth
-      <a href="{{ route('admin.dashboard') }}" class="text-gold text-sm tracking-wide block">Panel de administración</a>
+      @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+        <a href="{{ route('servidores') }}" class="text-white/80 text-sm tracking-wide block">Servidores</a>
+      @endif
+      @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+        <a href="{{ route('admin.dashboard') }}" class="text-gold text-sm tracking-wide block">Panel de administración</a>
+      @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+        <a href="{{ route('admin.services') }}" class="text-gold text-sm tracking-wide block">Mis Servicios</a>
+      @endif
     @else
       <a href="{{ route('login') }}" class="text-gold text-sm tracking-wide block">Iniciar sesión</a>
     @endauth

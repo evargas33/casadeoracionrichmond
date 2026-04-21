@@ -52,7 +52,7 @@
             </thead>
             <tbody class="divide-y divide-gray-100">
                 @forelse ($events as $event)
-                    <tr class="hover:bg-gray-50 transition">
+                    <tr wire:key="event-{{ $event->id }}" class="hover:bg-gray-50 transition">
                         <td class="px-5 py-3">
                             <p class="font-medium text-gray-800">{{ $event->title }}</p>
                             @if ($event->short_description)
@@ -97,11 +97,15 @@
                                 class="text-emerald-500 hover:text-emerald-700 text-xs font-medium">
                                 Inscritos ({{ $event->registrations_count }})
                             </button>
+                            @if(auth()->user()->hasAnyRole(['superadmin', 'admin', 'editor']))
                             <button wire:click="openEdit({{ $event->id }})"
                                 class="text-indigo-500 hover:text-indigo-700 text-xs font-medium">Edit</button>
+                            @endif
+                            @if(auth()->user()->hasAnyRole(['superadmin', 'admin']))
                             <button wire:click="delete({{ $event->id }})"
-                                wire:confirm="Delete this event?"
+                                wire:confirm="¿Eliminar este evento?"
                                 class="text-red-400 hover:text-red-600 text-xs font-medium">Delete</button>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -172,11 +176,13 @@
                             <label class="block text-xs font-medium text-gray-600 mb-1">Location</label>
                             <input wire:model="location" type="text" placeholder="Venue name"
                                 class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                            @error('location') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-600 mb-1">Capacity</label>
                             <input wire:model="capacity" type="number" min="1" placeholder="Leave blank = unlimited"
                                 class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                            @error('capacity') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
 

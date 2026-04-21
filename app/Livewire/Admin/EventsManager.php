@@ -110,6 +110,13 @@ class EventsManager extends Component
         abort_if(! auth()->user()->hasAnyRole(['superadmin', 'admin', 'editor']), 403);
 
         $data = $this->validate();
+
+        $data['capacity']  = $data['capacity']  !== '' ? (int) $data['capacity']  : null;
+        $data['end_date']  = $data['end_date']  !== '' ? $data['end_date']        : null;
+        $data['maps_url']  = $data['maps_url']  !== '' ? $data['maps_url']        : null;
+        $data['image']     = $data['image']     !== '' ? $data['image']           : null;
+        $data['address']   = $data['address']   !== '' ? $data['address']         : null;
+        $data['location']  = $data['location']  !== '' ? $data['location']        : null;
         $data['slug'] = Str::slug($data['title']);
 
         if ($this->isEditing) {

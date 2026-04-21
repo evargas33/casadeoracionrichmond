@@ -121,6 +121,19 @@
                         class="nav-group-label text-[10px] uppercase tracking-widest text-white/30 font-medium">Content</span>
                 </div>
 
+                {{-- Servicios — visible for leaders and admins --}}
+                @if(auth()->user()->hasAnyRole(['superadmin','admin','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
+                <a href="{{ route('admin.services') }}" data-label="Servicios"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-all cursor-pointer {{ request()->routeIs('admin.services') ? 'active' : '' }}">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        stroke-width="1.75">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                    <span class="nav-label text-sm">Servicios</span>
+                </a>
+                @endif
+
                 <a href="{{ route('admin.sermons') }}" data-label="Sermons"
                     class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-all cursor-pointer {{ request()->routeIs('admin.sermons') ? 'active' : '' }}">
                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
