@@ -127,10 +127,12 @@ $featuredSeries = \App\Models\Serie::where('active', true)
         @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
           <a href="{{ route('servidores') }}" class="nav-link text-white/80 hover:text-white text-sm font-light tracking-wide transition-colors">Servidores</a>
         @endif
-        @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+        @if(auth()->user()->hasAnyRole(['superadmin','admin','editor']))
           <a href="{{ route('admin.dashboard') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Panel</a>
         @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
           <a href="{{ route('admin.services') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Mis Servicios</a>
+        @else
+          <a href="{{ route('admin.profile') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Mi Perfil</a>
         @endif
       @else
         <a href="{{ route('login') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Iniciar sesión</a>
@@ -163,11 +165,17 @@ $featuredSeries = \App\Models\Serie::where('active', true)
       @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
         <a href="{{ route('servidores') }}" onclick="closeMenu()" class="text-white/80 text-sm tracking-wide">Servidores</a>
       @endif
-      @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+      @if(auth()->user()->hasAnyRole(['superadmin','admin','editor']))
         <a href="{{ route('admin.dashboard') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Panel de administración</a>
       @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
         <a href="{{ route('admin.services') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Mis Servicios</a>
+      @else
+        <a href="{{ route('admin.profile') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Mi Perfil</a>
       @endif
+      <form method="POST" action="{{ route('logout') }}" onclick="closeMenu()" class="mt-4 pt-4 border-t border-white/10">
+        @csrf
+        <button type="submit" class="text-white/80 hover:text-red-400 text-sm tracking-wide transition-colors">Cerrar Sesión</button>
+      </form>
     @else
       <a href="{{ route('login') }}" onclick="closeMenu()" class="text-gold text-sm tracking-wide">Iniciar sesión</a>
     @endauth
@@ -585,6 +593,7 @@ $featuredSeries = \App\Models\Serie::where('active', true)
           @foreach(['#acerca'=>'Acerca de nosotros','#eventos'=>'Eventos','#sermones'=>'Sermones','#visitanos'=>'Visítanos'] as $href=>$label)
           <li><a href="{{ $href }}" class="text-sm font-light transition-colors" style="color:rgba(255,255,255,.4)">{{ $label }}</a></li>
           @endforeach
+          <li><a href="{{ route('membership.create') }}" class="text-sm font-light transition-colors" style="color:rgba(255,255,255,.4)">Solicitud de membresía</a></li>
         </ul>
       </div>
 

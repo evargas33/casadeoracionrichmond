@@ -13,6 +13,7 @@ use App\Livewire\Admin\ProfileManager;
 use App\Livewire\Admin\ServicesManager;
 use App\Livewire\Admin\UsersManager;
 use App\Livewire\Admin\SettingsManager;
+use App\Livewire\Admin\MembershipRequestsManager;
 use App\Livewire\SermonsPage;
 use App\Livewire\SermonDetail;
 use App\Livewire\EventsPage;
@@ -20,6 +21,7 @@ use App\Livewire\EventDetail;
 use App\Livewire\LiveStream;
 use App\Livewire\PageDetail;
 use App\Livewire\ServiciosPage;
+use App\Livewire\MembershipPage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,6 +34,7 @@ Route::get('/eventos', EventsPage::class)->name('events.index');
 Route::get('/eventos/{slug}', EventDetail::class)->name('events.show');
 Route::get('/en-vivo', LiveStream::class)->name('live');
 Route::get('/p/{slug}', PageDetail::class)->name('page.show');
+Route::get('/membresia', MembershipPage::class)->name('membership.create');
 
 // Servidores — authenticated users with server roles only
 Route::get('/servidores', ServiciosPage::class)
@@ -56,13 +59,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ── Admin panel — standard roles ──
-Route::middleware(['auth', 'verified', 'role:superadmin,admin,editor,member'])->prefix('admin')->name('admin.')->group(function () {
+// ── Admin panel — standard roles (superadmin, admin, editor) ──
+Route::middleware(['auth', 'verified', 'role:superadmin,admin,editor'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('/sermons', SermonsManager::class)->name('sermons');
     Route::get('/series', SeriesManager::class)->name('series');
     Route::get('/events', EventsManager::class)->name('events');
     Route::get('/inscriptions', InscriptionsManager::class)->name('inscriptions');
+    Route::get('/membership-requests', MembershipRequestsManager::class)->name('membership-requests');
     Route::get('/pages', \App\Livewire\Admin\PagesManager::class)->name('pages');
     Route::get('/media', MediaLibrary::class)->name('media');
     Route::post('/media', [MediaController::class, 'store'])->name('media.store');
@@ -70,6 +74,10 @@ Route::middleware(['auth', 'verified', 'role:superadmin,admin,editor,member'])->
     Route::get('/users', UsersManager::class)->name('users');
     Route::get('/categories', CategoriesManager::class)->name('categories');
     Route::get('/settings', SettingsManager::class)->name('settings');
+});
+
+// ── Admin panel — profile access (all authenticated users) ──
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/profile', ProfileManager::class)->name('profile');
 });
 

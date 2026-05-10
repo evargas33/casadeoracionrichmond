@@ -177,6 +177,15 @@
                     <span class="nav-label text-sm">Inscripciones</span>
                 </a>
 
+                <a href="{{ route('admin.membership-requests') }}" data-label="Membresías"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-all cursor-pointer {{ request()->routeIs('admin.membership-requests') ? 'active' : '' }}">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        stroke-width="1.75">
+                        <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="nav-label text-sm">Membresías</span>
+                </a>
+
                 <a href="{{ route('admin.pages') }}" data-label="Pages"
                     class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-white/60 hover:text-white hover:bg-white/10 transition-all cursor-pointer {{ request()->routeIs('admin.pages') ? 'active' : '' }}">
                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"

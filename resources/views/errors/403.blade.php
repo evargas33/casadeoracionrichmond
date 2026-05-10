@@ -64,9 +64,14 @@
         <div class="code">403</div>
         <h1>Acceso Denegado</h1>
         <p>No tienes los permisos necesarios para acceder a esta sección. Contacta al administrador si crees que esto es un error.</p>
-        <a href="{{ url()->previous() !== url()->current() ? url()->previous() : '/' }}" class="btn">
-            Volver atrás
-        </a>
+        <div style="display: flex; gap: 12px;">
+            <button onclick="history.back()" class="btn" style="flex: 1;">
+                Volver atrás
+            </button>
+            <a href="/" class="btn" style="flex: 1;">
+                Ir al inicio
+            </a>
+        </div>
     </div>
 </body>
 </html>

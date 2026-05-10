@@ -86,11 +86,17 @@ $menuPages       = \App\Models\Page::inMenu()->get();
         @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
           <a href="{{ route('servidores') }}" class="nav-link text-white/80 hover:text-white text-sm font-light tracking-wide transition-colors {{ request()->routeIs('servidores') ? 'text-white' : '' }}">Servidores</a>
         @endif
-        @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+        @if(auth()->user()->hasAnyRole(['superadmin','admin','editor']))
           <a href="{{ route('admin.dashboard') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Panel</a>
         @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
           <a href="{{ route('admin.services') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Mis Servicios</a>
+        @else
+          <a href="{{ route('admin.profile') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Mi Perfil</a>
         @endif
+        <form method="POST" action="{{ route('logout') }}" class="ml-3">
+          @csrf
+          <button type="submit" class="text-white/80 hover:text-red-400 text-xs font-light transition-colors">Cerrar Sesión</button>
+        </form>
       @else
         <a href="{{ route('login') }}" class="border border-gold text-gold px-5 py-1.5 text-sm font-light tracking-wide hover:bg-gold hover:text-navy transition-all duration-300">Iniciar sesión</a>
       @endauth
@@ -122,11 +128,17 @@ $menuPages       = \App\Models\Page::inMenu()->get();
       @if(auth()->user()->hasAnyRole(['superadmin','admin','servidor','pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
         <a href="{{ route('servidores') }}" class="text-white/80 text-sm tracking-wide block">Servidores</a>
       @endif
-      @if(auth()->user()->hasAnyRole(['superadmin','admin','editor','member']))
+      @if(auth()->user()->hasAnyRole(['superadmin','admin','editor']))
         <a href="{{ route('admin.dashboard') }}" class="text-gold text-sm tracking-wide block">Panel de administración</a>
       @elseif(auth()->user()->hasAnyRole(['pastor','lider_alabanza','lider_ujieres','lider_tecnicos']))
         <a href="{{ route('admin.services') }}" class="text-gold text-sm tracking-wide block">Mis Servicios</a>
+      @else
+        <a href="{{ route('admin.profile') }}" class="text-gold text-sm tracking-wide block">Mi Perfil</a>
       @endif
+      <form method="POST" action="{{ route('logout') }}" class="mt-4 pt-4 border-t border-white/10">
+        @csrf
+        <button type="submit" class="text-white/80 hover:text-red-400 text-sm tracking-wide transition-colors">Cerrar Sesión</button>
+      </form>
     @else
       <a href="{{ route('login') }}" class="text-gold text-sm tracking-wide block">Iniciar sesión</a>
     @endauth
@@ -139,29 +151,49 @@ $menuPages       = \App\Models\Page::inMenu()->get();
 {{-- ── FOOTER ── --}}
 <footer class="pt-12 pb-8" style="background:#111e30">
   <div class="max-w-7xl mx-auto px-6 md:px-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-gold mb-4">Comunidad</h3>
+        <ul class="space-y-2">
+          <li><a href="{{ url('/') }}#acerca" class="text-xs text-white/50 hover:text-gold transition-colors">Acerca de nosotros</a></li>
+          <li><a href="{{ route('events.index') }}" class="text-xs text-white/50 hover:text-gold transition-colors">Eventos</a></li>
+          <li><a href="{{ route('sermons.index') }}" class="text-xs text-white/50 hover:text-gold transition-colors">Sermones</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-gold mb-4">Únete</h3>
+        <ul class="space-y-2">
+          <li><a href="{{ route('membership.create') }}" class="text-xs text-white/50 hover:text-gold transition-colors">Solicitud de membresía</a></li>
+          <li><a href="{{ url('/') }}#visitanos" class="text-xs text-white/50 hover:text-gold transition-colors">Visítanos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-gold mb-4">Síguenos</h3>
+        <div class="flex items-center gap-5">
+          @if($socialFb)
+            <a href="{{ $socialFb }}" target="_blank" class="text-white/30 hover:text-gold transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+          @endif
+          @if($socialIg)
+            <a href="{{ $socialIg }}" target="_blank" class="text-white/30 hover:text-gold transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+          @endif
+          @if($socialYt)
+            <a href="{{ $socialYt }}" target="_blank" class="text-white/30 hover:text-gold transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#111e30"/></svg>
+            </a>
+          @endif
+        </div>
+      </div>
+    </div>
     <div class="flex flex-col md:flex-row justify-between items-center gap-4" style="border-top:1px solid rgba(255,255,255,.08);padding-top:2rem">
       <div class="flex items-center gap-3">
         <div class="w-7 h-7 rounded-full flex items-center justify-center" style="border:1px solid rgba(201,168,76,.4)">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M12 2L12 8M12 8C12 8 8 6 5 8C2 10 2 14 5 16C8 18 12 16 12 16M12 8C12 8 16 6 19 8C22 10 22 14 19 16C16 18 12 16 12 16M12 16L12 22"/></svg>
         </div>
         <p class="text-xs font-light" style="color:rgba(255,255,255,.3)">© {{ date('Y') }} {{ $churchName }} · Todos los derechos reservados</p>
-      </div>
-      <div class="flex items-center gap-5">
-        @if($socialFb)
-          <a href="{{ $socialFb }}" target="_blank" class="text-white/30 hover:text-gold transition-colors">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-          </a>
-        @endif
-        @if($socialIg)
-          <a href="{{ $socialIg }}" target="_blank" class="text-white/30 hover:text-gold transition-colors">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          </a>
-        @endif
-        @if($socialYt)
-          <a href="{{ $socialYt }}" target="_blank" class="text-white/30 hover:text-gold transition-colors">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#111e30"/></svg>
-          </a>
-        @endif
       </div>
     </div>
   </div>
