@@ -22,11 +22,13 @@
             <p>Hemos recibido exitosamente tu solicitud de membresía en <strong>Casa de Oración</strong>.</p>
 
             <div class="data">
-                <p><strong>Nombre:</strong> {{ $membership->full_name }}</p>
+                <p><strong>Número de Solicitud:</strong> {{ $membership->id }}</p>
                 <p><strong>Email:</strong> {{ $membership->email }}</p>
                 <p><strong>Teléfono:</strong> {{ $membership->phone }}</p>
                 <p><strong>Fecha de envío:</strong> {{ $membership->submission_date->format('d/m/Y') }}</p>
             </div>
+
+            <p style="margin-top: 20px; font-size: 12px; color: #999;">Usa el número de solicitud <strong>#{{ $membership->id }}</strong> si necesitas hacer seguimiento de tu solicitud.</p>
 
             <p>Nos pondremos en contacto contigo pronto para confirmar tu solicitud.</p>
             <p>Que Dios te bendiga,</p>

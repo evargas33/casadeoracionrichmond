@@ -15,6 +15,7 @@ class MembershipRequestsManager extends Component
 {
     use WithPagination;
 
+    #[\Livewire\Attributes\Validate('nullable|string|max:100')]
     public string $search = '';
     public string $filterStatus = '';
 
@@ -80,18 +81,18 @@ class MembershipRequestsManager extends Component
         $membership = MembershipRequest::findOrFail($id);
         abort_if($membership->status !== 'pending', 403);
 
-        // Generar contraseña temporal
-        $temporaryPassword = Str::random(12);
+        // Generar token de reset de contraseña
+        $resetToken = Str::random(64);
 
         // Verificar si el usuario ya existe
         $user = User::where('email', $membership->email)->first();
 
         if (! $user) {
-            // Crear usuario si no existe
+            // Crear usuario si no existe (sin contraseña)
             $user = User::create([
                 'name' => $membership->full_name,
                 'email' => $membership->email,
-                'password' => Hash::make($temporaryPassword),
+                'password' => Hash::make(Str::random(32)), // Password aleatoria sin usar
                 'is_active' => true,
             ]);
 
@@ -99,8 +100,15 @@ class MembershipRequestsManager extends Component
             $memberRole = Role::where('name', 'member')->firstOrFail();
             $user->roles()->attach($memberRole);
 
-            // Enviar email con contraseña temporal
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new MembershipApprovalNotification($user, $temporaryPassword));
+            // Crear token de reset de contraseña
+            \DB::table('password_reset_tokens')->insert([
+                'email' => $user->email,
+                'token' => Hash::make($resetToken),
+                'created_at' => now(),
+            ]);
+
+            // Enviar email con link de reset (NO con contraseña)
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new MembershipApprovalNotification($user, $resetToken));
         }
 
         // Actualizar solicitud
@@ -118,10 +126,12 @@ class MembershipRequestsManager extends Component
     {
         abort_if(! auth()->user()->hasAnyRole(['superadmin', 'admin']), 403);
 
-        $data = $this->validate();
+        // Validar que existe una solicitud válida
+        $membership = MembershipRequest::where('id', $this->request_id)
+            ->where('status', 'pending')
+            ->firstOrFail();
 
-        $membership = MembershipRequest::findOrFail($this->request_id);
-        abort_if($membership->status !== 'pending', 403);
+        $data = $this->validate();
 
         $membership->update([
             'status' => 'rejected',
@@ -138,6 +148,15 @@ class MembershipRequestsManager extends Component
 
         MembershipRequest::findOrFail($id)->delete();
         session()->flash('success', 'Solicitud eliminada.');
+    }
+
+    private function escapeCsvFormula(string $value): string
+    {
+        // Prevenir CSV injection (CWE-1236)
+        if (preg_match('/^[=+@\-\t\r]/', $value)) {
+            return "'" . $value;
+        }
+        return $value;
     }
 
     public function exportCsv()
@@ -178,14 +197,14 @@ class MembershipRequestsManager extends Component
 
             foreach ($query as $req) {
                 fputcsv($handle, [
-                    $req->full_name,
-                    $req->email,
-                    $req->phone,
-                    $req->marital_status,
-                    $req->city,
+                    $this->escapeCsvFormula($req->full_name),
+                    $this->escapeCsvFormula($req->email),
+                    $this->escapeCsvFormula($req->phone),
+                    $this->escapeCsvFormula($req->marital_status),
+                    $this->escapeCsvFormula($req->city),
                     $req->status,
                     $req->submission_date->format('d/m/Y'),
-                    $req->approvedBy?->name ?? '',
+                    $this->escapeCsvFormula($req->approvedBy?->name ?? ''),
                     $req->approved_at?->format('d/m/Y H:i') ?? '',
                 ]);
             }

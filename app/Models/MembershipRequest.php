@@ -29,11 +29,6 @@ class MembershipRequest extends Model
         'commitment_accepted',
         'signature',
         'submission_date',
-        'status',
-        'approved_at',
-        'approved_by',
-        'rejection_reason',
-        'user_id',
     ];
 
     protected $casts = [

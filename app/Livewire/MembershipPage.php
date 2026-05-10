@@ -44,9 +44,9 @@ class MembershipPage extends Component
             'address' => 'required|string|max:300',
             'city' => 'required|string|max:100',
             'zip_code' => 'required|string|max:20',
-            'birth_date' => 'required|date',
+            'birth_date' => 'required|date|before:today',
             'phone' => 'required|string|max:30',
-            'email' => 'required|email|max:200',
+            'email' => 'required|email|max:200|unique:membership_requests,email',
             'marital_status' => 'required|in:casado,soltero',
             'spouse_name' => 'nullable|string|max:150',
             'has_children' => 'nullable|boolean',
@@ -60,13 +60,16 @@ class MembershipPage extends Component
             'emergency_contact_phone' => 'required|string|max:30',
             'commitment_accepted' => 'required|boolean',
             'signature' => 'required|string|max:200',
-            'submission_date' => 'required|date',
+            'submission_date' => 'required|date|today_or_before',
         ];
     }
 
     public function submit(): void
     {
         $data = $this->validate();
+
+        // Siempre usar la fecha del servidor, no la del cliente
+        $data['submission_date'] = now()->format('Y-m-d');
 
         $membership = MembershipRequest::create($data);
         Mail::to($membership->email)->send(new MembershipRequestConfirmation($membership));

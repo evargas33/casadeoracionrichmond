@@ -11,11 +11,12 @@ use Illuminate\Queue\SerializesModels;
 
 class MembershipApprovalNotification extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels; // SIN Queueable para evitar serializar token
 
     public function __construct(
         public User $user,
-        public string $temporaryPassword
+        #[\SensitiveParameter]
+        public string $resetToken
     ) {
     }
 
@@ -30,6 +31,12 @@ class MembershipApprovalNotification extends Mailable
     {
         return new Content(
             view: 'emails.membership-approval',
+            with: [
+                'resetLink' => route('password.reset', [
+                    'token' => $this->resetToken,
+                    'email' => $this->user->email,
+                ]),
+            ],
         );
     }
 

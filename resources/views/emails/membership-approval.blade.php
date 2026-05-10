@@ -23,19 +23,19 @@
             <p>Estimado/a {{ $user->name }},</p>
             <p>¡Excelentes noticias! Tu solicitud de membresía ha sido <strong>aprobada</strong> exitosamente.</p>
 
-            <h2>Tu Cuenta de Acceso</h2>
-            <p>Para acceder al panel de miembros, usa las siguientes credenciales:</p>
-
-            <div class="credentials">
-                <p><strong>Email:</strong> {{ $user->email }}</p>
-                <p><strong>Contraseña temporal:</strong> <code>{{ $temporaryPassword }}</code></p>
-            </div>
-
-            <p>Por tu seguridad, te recomendamos que cambies esta contraseña temporal la primera vez que accedas a tu cuenta.</p>
+            <h2>Establece tu Contraseña</h2>
+            <p>Para comenzar a usar tu cuenta, haz clic en el botón de abajo para establecer tu contraseña:</p>
 
             <center>
-                <a href="{{ route('login') }}" class="button">Inicia Sesión</a>
+                <a href="{{ $resetLink }}" class="button" style="display: inline-block; background: #1a2e4a; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; margin: 20px 0;">
+                    Establecer Contraseña
+                </a>
             </center>
+
+            <p>Este enlace es válido por 60 minutos. Si no puedes hacer clic, copia y pega esta URL en tu navegador:</p>
+            <p style="word-break: break-all; background: #f0f0f0; padding: 10px; border-radius: 4px; font-size: 12px;">
+                {{ $resetLink }}
+            </p>
 
             <p>Si tienes cualquier pregunta o necesitas ayuda, no dudes en contactarnos.</p>
             <p>Que Dios te bendiga abundantemente,</p>

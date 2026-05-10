@@ -57,9 +57,9 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse ($requests as $req)
                     <tr class="hover:bg-gray-50 transition">
-                        <td class="px-5 py-3 text-gray-900 font-medium">{{ $req->full_name }}</td>
-                        <td class="px-5 py-3 text-gray-600">{{ $req->email }}</td>
-                        <td class="px-5 py-3 text-gray-600">{{ $req->phone }}</td>
+                        <td class="px-5 py-3 text-gray-900 font-medium">{{ e($req->full_name) }}</td>
+                        <td class="px-5 py-3 text-gray-600">{{ e($req->email) }}</td>
+                        <td class="px-5 py-3 text-gray-600">{{ e($req->phone) }}</td>
                         <td class="px-5 py-3">
                             @if ($req->status === 'pending')
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
@@ -201,7 +201,7 @@
                     @if ($selectedRequest->status === 'rejected' && $selectedRequest->rejection_reason)
                         <div class="border-t border-gray-200 pt-4 bg-red-50 p-3 rounded">
                             <p class="text-gray-500 font-medium">Motivo de Rechazo</p>
-                            <p class="text-gray-900">{{ $selectedRequest->rejection_reason }}</p>
+                            <p class="text-gray-900">{{ e($selectedRequest->rejection_reason) }}</p>
                         </div>
                     @endif
                 </div>
