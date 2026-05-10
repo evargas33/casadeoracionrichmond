@@ -60,7 +60,7 @@ class MembershipPage extends Component
             'emergency_contact_phone' => 'required|string|max:30',
             'commitment_accepted' => 'required|boolean',
             'signature' => 'required|string|max:200',
-            'submission_date' => 'required|date|today_or_before',
+            'submission_date' => 'nullable|date',
         ];
     }
 
