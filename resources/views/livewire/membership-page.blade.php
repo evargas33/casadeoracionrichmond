@@ -142,18 +142,18 @@
                 <label class="block text-sm font-medium text-navy mb-2">¿Tiene hijos?</label>
                 <div class="flex gap-4">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="has_children" value="0" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model.live="has_children" name="has_children" value="false" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">No</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="has_children" value="1" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model.live="has_children" name="has_children" value="true" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">Sí</span>
                     </label>
                 </div>
             </div>
 
             <!-- Nombres de Hijos -->
-            @if ($has_children)
+            @if ($has_children === true || $has_children === 'true' || $has_children == 1)
                 <div>
                     <label for="children_names" class="block text-sm font-medium text-navy mb-1">
                         Nombres de Hijos
@@ -174,11 +174,11 @@
                 </label>
                 <div class="flex gap-4">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="received_jesus" value="0" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model="received_jesus" name="received_jesus" value="false" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">No</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="received_jesus" value="1" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold" required>
+                        <input type="radio" wire:model="received_jesus" name="received_jesus" value="true" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold" required>
                         <span class="text-navy">Sí</span>
                     </label>
                 </div>
@@ -194,11 +194,11 @@
                 </label>
                 <div class="flex gap-4">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="baptized_water" value="0" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model="baptized_water" name="baptized_water" value="false" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">No</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="baptized_water" value="1" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold" required>
+                        <input type="radio" wire:model="baptized_water" name="baptized_water" value="true" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold" required>
                         <span class="text-navy">Sí</span>
                     </label>
                 </div>
@@ -208,7 +208,7 @@
             </div>
 
             <!-- ¿En qué iglesia se bautizó? -->
-            @if ($baptized_water)
+            @if ($baptized_water === true || $baptized_water === 'true' || $baptized_water == 1)
                 <div>
                     <label for="baptism_church" class="block text-sm font-medium text-navy mb-1">
                         ¿En qué iglesia o congregación se bautizó?
@@ -227,11 +227,11 @@
                 <label class="block text-sm font-medium text-navy mb-2">¿Ha servido en algún ministerio?</label>
                 <div class="flex gap-4">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="has_served_ministry" value="0" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model="has_served_ministry" name="has_served_ministry" value="false" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">No</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="has_served_ministry" value="1" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model="has_served_ministry" name="has_served_ministry" value="true" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">Sí</span>
                     </label>
                 </div>
@@ -242,11 +242,11 @@
                 <label class="block text-sm font-medium text-navy mb-2">¿Le gustaría servir en algún ministerio?</label>
                 <div class="flex gap-4">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="wants_serve_ministry" value="0" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model="wants_serve_ministry" name="wants_serve_ministry" value="false" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">No</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" wire:model="wants_serve_ministry" value="1" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
+                        <input type="radio" wire:model="wants_serve_ministry" name="wants_serve_ministry" value="true" class="w-4 h-4 text-gold border-navy/15 focus:ring-gold">
                         <span class="text-navy">Sí</span>
                     </label>
                 </div>
